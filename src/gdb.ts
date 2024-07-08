@@ -245,7 +245,8 @@ export class GDBDebugSession extends LoggingDebugSession {
     private stopped: boolean = false;
     private stoppedReason: string = '';
     private continuing: boolean = false;
-
+    private currentOutput: string = '';
+    
     // stoppedThreadId represents where execution stopped because of a pause, exception, step or breakpoint
     // Generally continuing execution can only work from that thread for embedded processors. It is bit
     // different from 'currentThreadId'. This is also the last thread-id used to notify VSCode about
@@ -291,7 +292,8 @@ export class GDBDebugSession extends LoggingDebugSession {
         this.miDebugger.on('quit', this.quitEvent.bind(this));
         this.miDebugger.on('exited-normally', this.quitEvent.bind(this));
         this.miDebugger.on('stopped', this.stopEvent.bind(this));
-        this.miDebugger.on('msg', this.handleMsg.bind(this));
+        // this.miDebugger.on('msg', this.handleMsg.bind(this));
+        this.miDebugger.on('msg', this.handleDebuggerOutput.bind(this));
         this.miDebugger.on('breakpoint', this.handleBreakpoint.bind(this));
         this.miDebugger.on('watchpoint', this.handleWatchpoint.bind(this, 'hit'));
         this.miDebugger.on('watchpoint-scope', this.handleWatchpoint.bind(this, 'scope'));
@@ -1681,8 +1683,20 @@ export class GDBDebugSession extends LoggingDebugSession {
     protected handleAdapterOutput({type, msg}: {type: string, msg: string}) {
         if ((!this.debugReady && (this.args.showServerOutput === 'smart' || this.args.showServerOutput === undefined)) || this.args.showServerOutput === 'always')
         {
-            msg = msg.endsWith('\n') ? msg : msg + '\n';
+            // msg = msg.endsWith('\n') ? msg : msg + '\n';
+            this.currentOutput += msg.replace(/\r(?!\n)/g, '\r\n');
+            if (this.currentOutput.endsWith('\n')) {
+                this.sendEvent(new OutputEvent(this.currentOutput, type));
+                this.currentOutput = '';
+            }
+        }
+    }
+
+    protected handleDebuggerOutput(type: string, msg: string) {
+        if (this.debugReady || this.args.showServerOutput !== 'smart')
+        {
             this.sendEvent(new OutputEvent(msg, type));
+
         }
     }
     // TODO: We should add more features here. type could be a message for error, warning, info and we auto prepend
