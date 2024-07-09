@@ -1688,8 +1688,8 @@ export class GDBDebugSession extends LoggingDebugSession {
         {
             try {
             const lines = (this.adapterOutput[type] + msg).split(/\r?\n|\r/);
-            this.adapterOutput[type] = lines.pop(); 
-            lines.forEach(line => {
+            this.adapterOutput[type] = lines.pop();
+            lines.forEach((line) => {
                 this.sendEvent(new OutputEvent('S: ' + line + '\n', type));
             });
         }
