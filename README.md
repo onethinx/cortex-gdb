@@ -8,6 +8,6 @@ Debugging support for ARM Cortex-M Microcontrollers.
 Forked from [the Cortex-Debug repository of Marus Ball](https://github.com/Marus/cortex-debug)
 
 ## Acknowledgments
-Big thanks to the contributing developers at Marus Ball's repository.
+Big thanks to the contributing developers at Marus Ball's repository.<br>
 Parts of this extension are based upon Jan Jurzitza's (WebFreak) code-debug extension (https://github.com/WebFreak001/code-debug).<br>
 His project provided an excellent base for GDB MI parsing and interaction.
