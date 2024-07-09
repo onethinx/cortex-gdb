@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "preview": false,
     "activationEvents": [
         "onDebugResolve:cortex-gdb",
@@ -755,6 +755,11 @@
                                 "default": null,
                                 "description": "For externally (servertype = \"external\") controlled GDB Servers you must specify the GDB target to connect to. This can either be a \"hostname:port\" combination or path to a serial port",
                                 "type": "string"
+                            },
+                            "gdbPort": {
+                                "default": 50000,
+                                "type": "number",
+                                "description": "Port to use for internal GDB server (cortex-gdb will scan a range of 2000 ports starting at gdbPort and use the first free port)"
                             },
                             "breakAfterReset": {
                                 "default": false,
@@ -1879,6 +1884,11 @@
                                 "default": null,
                                 "description": "For externally (servertype = \"external\") controlled GDB Servers you must specify the GDB target to connect to. This can either be a \"hostname:port\" combination or path to a serial port",
                                 "type": "string"
+                            },
+                            "gdbPort": {
+                                "default": 50000,
+                                "type": "number",
+                                "description": "Port to use for internal GDB server (cortex-gdb will scan a range of 2000 ports starting at gdbPort and use the first free port)"
                             },
                             "runToMain": {
                                 "description": "Deprecated: please use 'runToEntryPoint' instead.",

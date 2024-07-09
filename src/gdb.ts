@@ -522,7 +522,7 @@ export class GDBDebugSession extends LoggingDebugSession {
 
     private getTCPPorts(useParent): Thenable<void> {
         return new Promise((resolve, reject) => {
-            const startPort = 50000;
+            const gdbPort = this.args.gdbPort || 50000;
             if (useParent) {
                 this.ports = this.args.pvtPorts = this.args.pvtParent.pvtPorts;
                 this.serverController.setPorts(this.ports);
@@ -532,7 +532,7 @@ export class GDBDebugSession extends LoggingDebugSession {
                 return resolve();
             }
             const totalPortsNeeded = this.calculatePortsNeeded();
-            const portFinderOpts = { min: startPort, max: 52000, retrieve: totalPortsNeeded, consecutive: true };
+            const portFinderOpts = { min: gdbPort, max: gdbPort + 2000, retrieve: totalPortsNeeded, consecutive: true };
             TcpPortScanner.findFreePorts(portFinderOpts, GDBServer.LOCALHOST).then((ports) => {
                 this.createPortsMap(ports);
                 this.serverController.setPorts(this.ports);
@@ -618,7 +618,7 @@ export class GDBDebugSession extends LoggingDebugSession {
                         doResolve();
                     } else {
                         const server = this.serverController?.name || this.args.servertype;
-                        const msg = `${server}: GDB Server Quit Unexpectedly. See gdb-server output in TERMINAL tab for more details.`;
+                        const msg = `${server}: GDB Server Quit Unexpectedly.`;
                         this.launchErrorResponse(response, 103, msg);
                         doResolve();
                     }
@@ -1684,7 +1684,8 @@ export class GDBDebugSession extends LoggingDebugSession {
     }
 
     protected handleAdapterOutput({type, msg}: {type: string, msg: string}) {
-        if ((!this.debugReady && (this.args.showServerOutput === 'switch' || this.args.showServerOutput === undefined)) || this.args.showServerOutput === 'always')
+        const showServerOutput = this.args.showServerOutput || 'switch';
+        if ((!this.debugReady && this.args.showServerOutput === 'switch') || this.args.showServerOutput === 'always')
         {
             try {
             const lines = (this.adapterOutput[type] + msg).split(/\r?\n|\r/);
@@ -1700,7 +1701,8 @@ export class GDBDebugSession extends LoggingDebugSession {
     }
 
     protected handleDebuggerOutput(type: string, msg: string) {
-        if (this.debugReady || this.args.showServerOutput !== 'switch')
+        const showServerOutput = this.args.showServerOutput || 'switch';
+        if (this.debugReady || showServerOutput !== 'switch')
         {
             this.sendEvent(new OutputEvent('G: ' + msg, type));
         }
