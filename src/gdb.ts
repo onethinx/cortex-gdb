@@ -245,7 +245,10 @@ export class GDBDebugSession extends LoggingDebugSession {
     private stopped: boolean = false;
     private stoppedReason: string = '';
     private continuing: boolean = false;
-    private currentOutput: string = '';
+    private adapterOutput = {
+        stderr: '',
+        stdout: ''
+    };
     
     // stoppedThreadId represents where execution stopped because of a pause, exception, step or breakpoint
     // Generally continuing execution can only work from that thread for embedded processors. It is bit
@@ -1683,20 +1686,23 @@ export class GDBDebugSession extends LoggingDebugSession {
     protected handleAdapterOutput({type, msg}: {type: string, msg: string}) {
         if ((!this.debugReady && (this.args.showServerOutput === 'smart' || this.args.showServerOutput === undefined)) || this.args.showServerOutput === 'always')
         {
-            // msg = msg.endsWith('\n') ? msg : msg + '\n';
-            this.currentOutput += msg.replace(/\r(?!\n)/g, '\r\n');
-            if (this.currentOutput.endsWith('\n')) {
-                this.sendEvent(new OutputEvent(this.currentOutput, type));
-                this.currentOutput = '';
-            }
+            try {
+            const lines = (this.adapterOutput[type] + msg).split(/\r?\n|\r/);
+            this.adapterOutput[type] = lines.pop(); 
+            lines.forEach(line => {
+                this.sendEvent(new OutputEvent('S: ' + line + '\n', type));
+            });
+        }
+        catch (e) {
+            this.sendEvent(new OutputEvent('S: ' + e.toString() + '\n', type));
+        }
         }
     }
 
     protected handleDebuggerOutput(type: string, msg: string) {
         if (this.debugReady || this.args.showServerOutput !== 'smart')
         {
-            this.sendEvent(new OutputEvent(msg, type));
-
+            this.sendEvent(new OutputEvent('G: ' + msg, type));
         }
     }
     // TODO: We should add more features here. type could be a message for error, warning, info and we auto prepend
@@ -1711,10 +1717,10 @@ export class GDBDebugSession extends LoggingDebugSession {
         msg = this.wrapTimeStamp(msg);
         if (this.args.pvtShowDevDebugOutput === ADAPTER_DEBUG_MODE.VSCODE) {
             logger.setup(Logger.LogLevel.Stop, false, false);
-            this.sendEvent(new OutputEvent(msg, type));
+            this.sendEvent(new OutputEvent('I: ' + msg, type));
             logger.setup(Logger.LogLevel.Verbose, false, false);
         } else {
-            this.sendEvent(new OutputEvent(msg, type));
+            this.sendEvent(new OutputEvent('I: ' + msg, type));
         }
     }
 

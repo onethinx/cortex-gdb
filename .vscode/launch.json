@@ -46,7 +46,7 @@
 		{
 			"name": "Extension + Debug Server",
 			"configurations": ["Launch Extension", "Debug Server"],
-			"preLaunchTask": "compile"
+			//"preLaunchTask": "compile"
 		}
 	]
 }
