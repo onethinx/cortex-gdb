@@ -1072,10 +1072,10 @@
                                 "enum": [
                                     "never",
                                     "always",
-                                    "smart"
+                                    "switch"
                                 ],
-                                "default": "smart",
-                                "description": "Prints server output responses to the console. 'never': no server responses, 'always': all server responses, regardless of debugging state, 'smart': switches from server to GDB when debugging is active",
+                                "default": "switch",
+                                "description": "Prints server output responses to the console. 'never': no server responses, 'always': all server responses, regardless of debugging state, 'switch': switches from server to GDB when debugging is active",
                                 "type": "string"
                             },
                             "svdFile": {
@@ -2236,6 +2236,16 @@
                                 "default": false,
                                 "description": "Show timestamps when 'showDevDebugOutput' is enabled",
                                 "type": "boolean"
+                            },
+                            "showServerOutput": {
+                                "enum": [
+                                    "never",
+                                    "always",
+                                    "switch"
+                                ],
+                                "default": "switch",
+                                "description": "Prints server output responses to the console. 'never': no server responses, 'always': all server responses, regardless of debugging state, 'switch': switches from server to GDB when debugging is active",
+                                "type": "string"
                             },
                             "svdFile": {
                                 "default": null,

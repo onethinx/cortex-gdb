@@ -162,9 +162,6 @@ export class CortexDebugConfigurationProvider implements vscode.DebugConfigurati
         if (config.showDevDebugOutput === undefined) {
             config.showDevDebugOutput = configuration.get(CortexDebugKeys.DEV_DEBUG_MODE, ADAPTER_DEBUG_MODE.NONE);
         }
-        if (config.showServerOutput === undefined) {
-            config.showServerOutput = 'smart';
-        }
         if (!sanitizeDevDebug(config)) {
             const modes = Object.values(ADAPTER_DEBUG_MODE);
             vscode.window.showInformationMessage(`launch.json: "showDevDebugOutput" muse be one of ${modes}. Setting to "${config.showDevDebugOutput}"`);

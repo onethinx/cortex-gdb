@@ -1684,7 +1684,7 @@ export class GDBDebugSession extends LoggingDebugSession {
     }
 
     protected handleAdapterOutput({type, msg}: {type: string, msg: string}) {
-        if ((!this.debugReady && (this.args.showServerOutput === 'smart' || this.args.showServerOutput === undefined)) || this.args.showServerOutput === 'always')
+        if ((!this.debugReady && (this.args.showServerOutput === 'switch' || this.args.showServerOutput === undefined)) || this.args.showServerOutput === 'always')
         {
             try {
             const lines = (this.adapterOutput[type] + msg).split(/\r?\n|\r/);
@@ -1700,7 +1700,7 @@ export class GDBDebugSession extends LoggingDebugSession {
     }
 
     protected handleDebuggerOutput(type: string, msg: string) {
-        if (this.debugReady || this.args.showServerOutput !== 'smart')
+        if (this.debugReady || this.args.showServerOutput !== 'switch')
         {
             this.sendEvent(new OutputEvent('G: ' + msg, type));
         }
