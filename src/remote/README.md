@@ -1,3 +1,3 @@
-# cortex-debug-remote
+# cortex-gdb-remote
 
-This extension provides host services for the Cortex-Debug extension running in remote mode
+This extension provides host services for the Cortex-GDB extension running in remote mode

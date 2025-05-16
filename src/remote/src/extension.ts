@@ -12,8 +12,8 @@ export class CortexDebugRemote {
 
     constructor(public context: vscode.ExtensionContext) {
         console.log('in CortexDebugRemote::constructor');
-        vscode.window.showInformationMessage('cortex-debug-remote activated!');
-        const disposable = vscode.commands.registerCommand('cortex-debug-remote.helloWorld', this.hello.bind(this));
+        vscode.window.showInformationMessage('cortex-gdb-remote activated!');
+        const disposable = vscode.commands.registerCommand('cortex-gdb-remote.helloWorld', this.hello.bind(this));
 
         context.subscriptions.push(disposable);
         this.server = new Server(context);
@@ -26,7 +26,7 @@ export class CortexDebugRemote {
     }
 
     public hello(arg: string): Interfaces.helloReturn {
-        const str = `in Hello() from cortex-debug-remote! arg: ${arg}`;
+        const str = `in Hello() from cortex-gdb-remote! arg: ${arg}`;
         const ret = this.server.hello(arg);
         vscode.window.showInformationMessage(str + JSON.stringify(ret, undefined, 4));
         console.log(str, ret);

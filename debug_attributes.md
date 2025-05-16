@@ -1,6 +1,6 @@
-There are many `User/Workspace Settings` to control things globally. You can find these in the VSCode Settings UI. `launch.json` can override some of those settings. There is a lot of functionality that is available via `Settings` and some may be useful in a team environment and/or can be used across all cortex-debug sessions
+There are many `User/Workspace Settings` to control things globally. You can find these in the VSCode Settings UI. `launch.json` can override some of those settings. There is a lot of functionality that is available via `Settings` and some may be useful in a team environment and/or can be used across all cortex-gdb sessions
 
-![](./images/cortex-debug-settings.png)
+![](./images/cortex-gdb-settings.png)
 
 The following attributes (properties) can be used in your `launch.json` to control various aspects of debugging. Also `IntelliSense` is an invaluable aid while editing `launch.json`. With `IntelliSense`, you can hover over an attribute to get more information and/or help you find attributes (just start typing a double-quote, use Tab key) and provide defaults/options.
 
@@ -48,7 +48,7 @@ If the type is marked as `{...}` it means that it is a complex item can have mul
 | openOCDLaunchCommands | string[] | Both | OpenOCD command(s) after configuration files are loaded (-c options) |
 | openOCDPreConfigLaunchCommands | string[] | Both | OpenOCD command(s) before configuration files are loaded (-c options) |
 | overrideAttachCommands | string[] | Attach | Override the commands that are normally executed as part of attaching to a running target. In most cases it is preferable to use preAttachCommands and postAttachCommands to customize the GDB attach sequence. |
-| overrideGDBServerStartedRegex | string | Both | You can supply a regular expression (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) in the configuration property to override the output from the GDB Server that is looked for to determine if the GDB Server has started. Under most circumstances this will not be necessary - but could be needed as a result of a change in the output of a GDB Server making it incompatible with cortex-debug. This property has no effect for bmp or external GDB Server types. |
+| overrideGDBServerStartedRegex | string | Both | You can supply a regular expression (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) in the configuration property to override the output from the GDB Server that is looked for to determine if the GDB Server has started. Under most circumstances this will not be necessary - but could be needed as a result of a change in the output of a GDB Server making it incompatible with cortex-gdb. This property has no effect for bmp or external GDB Server types. |
 | overrideLaunchCommands | string[] | Launch | Override the commands that are normally executed as part of flashing and launching the target. In most cases it is preferable to use preLaunchCommands and postLaunchCommands to customize the GDB launch sequence. |
 | overrideResetCommands | string[] | Both | Override the commands that are normally executed as part of reset-ing the target. When undefined the deprecated overrideRestartCommands is used if it exists. |
 | postAttachCommands | string[] | Attach | Additional GDB Commands to be executed after the main attach sequence has finished. |
@@ -62,7 +62,7 @@ If the type is marked as `{...}` it means that it is a complex item can have mul
 | preResetCommands | string[] | Both | Additional GDB Commands to be executed at the start of the reset sequence. When undefined the deprecated preRestartCommands is used. |
 | rtos | string | Both | RTOS being used. For JLink this can be Azure, ChibiOS, embOS, FreeRTOS, NuttX, Zephyr or the path to a custom JLink RTOS Plugin library. For OpenOCD this can be auto (recommended), FreeRTOS, ThreadX, chibios, Chromium-EC, eCos, embKernel, linux, mqx, nuttx, RIOT, uCOS-III, or Zephyr. |
 | rttConfig | object | Both | SEGGER's Real Time Trace (RTT) and supported by JLink, OpenOCD and perhaps others in the future |
-| rttConfig<br>.address | string | Both | Address to start searching for the RTT control block. Use "auto" for Cortex-Debug to use the address from elf file |
+| rttConfig<br>.address | string | Both | Address to start searching for the RTT control block. Use "auto" for Cortex-GDB to use the address from elf file |
 | rttConfig<br>.clearSearch | boolean | Both | When true, clears the search-string. Only applicable when address is "auto" |
 | rttConfig<br>.decoders | {object} | Both | SWO Decoder Configuration |
 | rttConfig<br>.enabled | boolean | Both | Enable/Disable RTT |
@@ -75,7 +75,7 @@ If the type is marked as `{...}` it means that it is a complex item can have mul
 | serialNumber | string | Both | J-Link or ST-LINK Serial Number - only needed if multiple J-Links/ST-LINKs are connected to the computer |
 | serverArgs | string[] | Both | Additional arguments to pass to GDB Server command line |
 | serverpath | string | Both | This setting can be used to override the GDB Server path user/workspace setting for a particular launch configuration. It is the full pathname to the executable or name of executable if it is in your PATH |
-| servertype | string | Both | GDB Server type - supported types are jlink, openocd, pyocd, pe, stlink, stutil, qemu, bmp and external. For "external", [please read our Wiki](https://github.com/Marus/cortex-debug/wiki/External-gdb-server-configuration). The executable in your PATH is used by default, to override this use serverpath. |
+| servertype | string | Both | GDB Server type - supported types are jlink, openocd, pyocd, pe, stlink, stutil, qemu, bmp and external. For "external", [please read our Wiki](https://github.com/onethinx/cortex-gdb/wiki/External-gdb-server-configuration). The executable in your PATH is used by default, to override this use serverpath. |
 | showDevDebugOutput | string | Both | Used to debug this extension. Prints all GDB responses to the console. 'raw' prints gdb responses, 'parsed' prints results after parsing, 'both' prints both. 'vscode' shows raw and VSCode interactions |
 | showDevDebugTimestamps | boolean | Both | Show timestamps when 'showDevDebugOutput' is enabled |
 | stlinkPath | string | Both | Path to the ST-LINK_gdbserver executable. If not set then ST-LINK_gdbserver (ST-LINK_gdbserver.exe on Windows) must be on the system path. |

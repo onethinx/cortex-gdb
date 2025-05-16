@@ -1,7 +1,7 @@
 {
-	"name": "cortex-debug-remote",
-	"displayName": "cortex-debug-remote",
-	"description": "Extension to support VSCode remote developent with Cortex-Debug",
+	"name": "cortex-gdb-remote",
+	"displayName": "cortex-gdb-remote",
+	"description": "Extension to support VSCode remote developent with Cortex-GDB",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.63.0"
@@ -10,11 +10,11 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onDebugResolve:cortex-debug",
-		"onCommand:cortex-debug-remote.helloWorld"
+		"onDebugResolve:cortex-gdb",
+		"onCommand:cortex-gdb-remote.helloWorld"
 	],
 	"main": "./dist/extension.js",
-	"publisher": "marus25",
+	"publisher": "onethinx",
 	"license": "MIT",
 	"extensionKind": [
 		"ui"
@@ -22,7 +22,7 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "cortex-debug-remote.helloWorld",
+				"command": "cortex-gdb-remote.helloWorld",
 				"title": "Hello World"
 			}
 		]

@@ -34,11 +34,11 @@ export class CortexDebugConfigurationProvider implements vscode.DebugConfigurati
 
     public provideDebugConfigurations(): vscode.ProviderResult<vscode.DebugConfiguration[]> {
         return [{
-            name: 'Cortex Debug',
+            name: 'Cortex DBG',
             cwd: '${workspaceFolder}',
             executable: './bin/executable.elf',
             request: 'launch',
-            type: 'cortex-debug',
+            type: 'cortex-gdb',
             runToEntryPoint: 'main',
             servertype: 'jlink'
         }];
@@ -134,7 +134,7 @@ export class CortexDebugConfigurationProvider implements vscode.DebugConfigurati
         if (config.runToEntryPoint) { config.runToEntryPoint = config.runToEntryPoint.trim(); } else if (config.runToMain) {
             config.runToEntryPoint = 'main';
             vscode.window.showWarningMessage(
-                'launch.json: "runToMain" has been deprecated and will not work in future versions of Cortex-Debug. Please use "runToEntryPoint" instead');
+                'launch.json: "runToMain" has been deprecated and will not work in future versions of Cortex-GDB. Please use "runToEntryPoint" instead');
         }
 
         if ((type !== 'openocd') || !config.ctiOpenOCDConfig?.enabled) {
@@ -186,7 +186,7 @@ export class CortexDebugConfigurationProvider implements vscode.DebugConfigurati
             }
         }
 
-        const configuration = vscode.workspace.getConfiguration('cortex-debug');
+        const configuration = vscode.workspace.getConfiguration('cortex-gdb');
         if (config.pvtAdapterDebugOptions === undefined) {
             config.pvtAdapterDebugOptions = configuration.get('pvtAdapterDebugOptions', {});
         }
@@ -255,7 +255,7 @@ export class CortexDebugConfigurationProvider implements vscode.DebugConfigurati
         }
         this.validateLoadAndSymbolFiles(config, cwd);
 
-        const extension = vscode.extensions.getExtension('marus25.cortex-debug');
+        const extension = vscode.extensions.getExtension('onethinx.cortex-gdb');
         config.pvtVersion = extension?.packageJSON?.version || '<unknown version>';
 
         if (config.liveWatch?.enabled) {
@@ -480,7 +480,7 @@ export class CortexDebugConfigurationProvider implements vscode.DebugConfigurati
     private setOsSpecficConfigSetting(config: vscode.DebugConfiguration, dstName: string, propName: string = '') {
         if (!config[dstName]) {
             propName = propName || dstName;
-            const settings = vscode.workspace.getConfiguration('cortex-debug');
+            const settings = vscode.workspace.getConfiguration('cortex-gdb');
             const obj = settings[propName];
             if ((obj !== undefined) && (obj !== null)) {
                 if (typeof obj === 'object') {

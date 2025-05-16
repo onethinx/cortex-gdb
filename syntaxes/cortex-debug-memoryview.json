@@ -1,6 +1,6 @@
 {
-    "name": "Cortex-Debug Memory View",
-    "scopeName": "source.cortex-debug-memoryview",
+    "name": "Cortex-GDB Memory View",
+    "scopeName": "source.cortex-gdb-memoryview",
     "patterns": [
         {
             "comment": "Heading",

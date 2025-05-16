@@ -1,8 +1,8 @@
 {
-    "version": "1.13.0-pre6",
+    "version": "1.0.3",
     "preview": false,
     "activationEvents": [
-        "onDebugResolve:cortex-debug",
+        "onDebugResolve:cortex-gdb",
         "onStartupFinished"
     ],
     "categories": [
@@ -14,12 +14,12 @@
                 "type": "object",
                 "title": "Debugger",
                 "properties": {
-                    "cortex-debug.variableUseNaturalFormat": {
+                    "cortex-gdb.variableUseNaturalFormat": {
                         "type": "boolean",
                         "default": true,
                         "description": "If true, display variables in their natural format as specified by ARM. Hex otherwise."
                     },
-                    "cortex-debug.liveWatchRefreshRate": {
+                    "cortex-gdb.liveWatchRefreshRate": {
                         "default": 300,
                         "description": "GUI refresh frequency in milliseconds. Your sample rate can be much faster than refresh rate. VSCode UI cannot handle high refresh rates and your Live Watch window will look frozen. Do not recommend below 250ms as it will not be legible anyways. Anything below 200ms did not work at all for us",
                         "type": "number",
@@ -33,7 +33,7 @@
                 "type": "object",
                 "title": "External: GNU Tools",
                 "properties": {
-                    "cortex-debug.armToolchainPath": {
+                    "cortex-gdb.armToolchainPath": {
                         "type": [
                             "string",
                             "null"
@@ -41,7 +41,7 @@
                         "default": null,
                         "description": "Path to the GCC Arm Toolchain (standard prefix is \"arm-none-eabi\" - can be set through the armToolchainPrefix setting) to use. If not set the tools must be on the system path. Do not include the executable file name in this path."
                     },
-                    "cortex-debug.armToolchainPath.linux": {
+                    "cortex-gdb.armToolchainPath.linux": {
                         "type": [
                             "string",
                             "null"
@@ -49,7 +49,7 @@
                         "default": null,
                         "description": "Path to the GCC Arm Toolchain (standard prefix is \"arm-none-eabi\" - can be set through the armToolchainPrefix setting) to use. If not set the tools must be on the system path. Do not include the executable file name in this path."
                     },
-                    "cortex-debug.armToolchainPath.osx": {
+                    "cortex-gdb.armToolchainPath.osx": {
                         "type": [
                             "string",
                             "null"
@@ -57,7 +57,7 @@
                         "default": null,
                         "description": "Path to the GCC Arm Toolchain (standard prefix is \"arm-none-eabi\" - can be set through the armToolchainPrefix setting) to use. If not set the tools must be on the system path. Do not include the executable file name in this path."
                     },
-                    "cortex-debug.armToolchainPath.windows": {
+                    "cortex-gdb.armToolchainPath.windows": {
                         "type": [
                             "string",
                             "null"
@@ -65,7 +65,7 @@
                         "default": null,
                         "description": "Path to the GCC Arm Toolchain (standard prefix is \"arm-none-eabi\" - can be set through the armToolchainPrefix setting) to use. If not set the tools must be on the system path. Do not include the executable file name in this path."
                     },
-                    "cortex-debug.armToolchainPrefix": {
+                    "cortex-gdb.armToolchainPrefix": {
                         "type": [
                             "string",
                             "null"
@@ -73,7 +73,7 @@
                         "default": "arm-none-eabi",
                         "description": "The prefix to use for the arm toolchain - the standard release from arm uses \"arm-none-eabi\" but alternative toolchains may use a different prefix. Currently the gdb, objdump and nm tools are needed."
                     },
-                    "cortex-debug.gdbPath.linux": {
+                    "cortex-gdb.gdbPath.linux": {
                         "type": [
                             "string",
                             "null"
@@ -81,7 +81,7 @@
                         "default": null,
                         "description": "This setting allows you to completely override the path/executable for the GDB executable. This is useful for cases where your gdb executable doesn't follow the standard <tuple>-gdb format - for example `gdb-multiarch`. This can be just the executable name (if on the system path) or the full path."
                     },
-                    "cortex-debug.gdbPath.osx": {
+                    "cortex-gdb.gdbPath.osx": {
                         "type": [
                             "string",
                             "null"
@@ -89,7 +89,7 @@
                         "default": null,
                         "description": "This setting allows you to completely override the path/executable for the GDB executable. This is useful for cases where your gdb executable doesn't follow the standard <tuple>-gdb format - for example `gdb-multiarch`. This can be just the executable name (if on the system path) or the full path."
                     },
-                    "cortex-debug.gdbPath.windows": {
+                    "cortex-gdb.gdbPath.windows": {
                         "type": [
                             "string",
                             "null"
@@ -97,7 +97,7 @@
                         "default": null,
                         "description": "This setting allows you to completely override the path/executable for the GDB executable. This is useful for cases where your gdb executable doesn't follow the standard <tuple>-gdb format - for example `gdb-multiarch`. This can be just the executable name (if on the system path) or the full path."
                     },
-                    "cortex-debug.gdbPath": {
+                    "cortex-gdb.gdbPath": {
                         "type": [
                             "string",
                             "null"
@@ -105,7 +105,7 @@
                         "default": null,
                         "description": "This setting allows you to completely override the path/executable for the GDB executable. This is useful for cases where your gdb executable doesn't follow the standard <tuple>-gdb format - for example `gdb-multiarch`. This can be just the executable name (if on the system path) or the full path."
                     },
-                    "cortex-debug.objdumpPath.linux": {
+                    "cortex-gdb.objdumpPath.linux": {
                         "type": [
                             "string",
                             "null"
@@ -113,7 +113,7 @@
                         "default": null,
                         "description": "This setting allows you to completely override the path/executable for the objdump executable. This is useful for cases where your objdump executable doesn't follow the standard <tuple>-objdump format - for example `objdump-multiarch`. This can be just the executable name (if on the system path) or the full path. The program 'nm' is also expected alongside"
                     },
-                    "cortex-debug.objdumpPath.osx": {
+                    "cortex-gdb.objdumpPath.osx": {
                         "type": [
                             "string",
                             "null"
@@ -121,7 +121,7 @@
                         "default": null,
                         "description": "This setting allows you to completely override the path/executable for the objdump executable. This is useful for cases where your objdump executable doesn't follow the standard <tuple>-objdump format - for example `objdump-multiarch`. This can be just the executable name (if on the system path) or the full path. The program 'nm' is also expected alongside"
                     },
-                    "cortex-debug.objdumpPath.windows": {
+                    "cortex-gdb.objdumpPath.windows": {
                         "type": [
                             "string",
                             "null"
@@ -129,7 +129,7 @@
                         "default": null,
                         "description": "This setting allows you to completely override the path/executable for the objdump executable. This is useful for cases where your objdump executable doesn't follow the standard <tuple>-objdump format - for example `objdump-multiarch`. This can be just the executable name (if on the system path) or the full path. The program 'nm' is also expected alongside"
                     },
-                    "cortex-debug.objdumpPath": {
+                    "cortex-gdb.objdumpPath": {
                         "type": [
                             "string",
                             "null"
@@ -137,13 +137,13 @@
                         "default": null,
                         "description": "This setting allows you to completely override the path/executable for the objdump executable. This is useful for cases where your objdump executable doesn't follow the standard <tuple>-objdump format - for example `objdump-multiarch`. This can be just the executable name (if on the system path) or the full path. The program 'nm' is also expected alongside"
                     },
-                    "cortex-debug.internalDebugOptions": {
+                    "cortex-gdb.internalDebugOptions": {
                         "description": "Internal debug options to debug this extension. These options must ideally be selected before you start VSCode",
                         "type": "object",
                         "properties": {
                             "file": {
                                 "type": "string",
-                                "default": "cortex-debug-log-${PID}.txt",
+                                "default": "cortex-gdb-log-${PID}.txt",
                                 "description": "Pathname were debug output is stored. If empty or not-writable, no output is created. Use ${PID} in the file name to make it unique per a session"
                             },
                             "disassembly": {
@@ -159,7 +159,7 @@
                 "type": "object",
                 "title": "External: GDB Servers",
                 "properties": {
-                    "cortex-debug.JLinkGDBServerPath": {
+                    "cortex-gdb.JLinkGDBServerPath": {
                         "type": [
                             "string",
                             "null"
@@ -167,7 +167,7 @@
                         "default": null,
                         "description": "Path to the JLink GDB Server. If not set then JLinkGDBServer (JLinkGDBServerCL.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.JLinkGDBServerPath.linux": {
+                    "cortex-gdb.JLinkGDBServerPath.linux": {
                         "type": [
                             "string",
                             "null"
@@ -175,7 +175,7 @@
                         "default": null,
                         "description": "Path to the JLink GDB Server. If not set then JLinkGDBServer (JLinkGDBServerCLExe) must be on the system path."
                     },
-                    "cortex-debug.JLinkGDBServerPath.osx": {
+                    "cortex-gdb.JLinkGDBServerPath.osx": {
                         "type": [
                             "string",
                             "null"
@@ -183,7 +183,7 @@
                         "default": null,
                         "description": "Path to the JLink GDB Server. If not set then JLinkGDBServer (JLinkGDBServerCLExe) must be on the system path."
                     },
-                    "cortex-debug.JLinkGDBServerPath.windows": {
+                    "cortex-gdb.JLinkGDBServerPath.windows": {
                         "type": [
                             "string",
                             "null"
@@ -191,7 +191,7 @@
                         "default": null,
                         "description": "Path to the JLink GDB Server. If not set then JLinkGDBServer (JLinkGDBServerCL.exe) must be on the system path."
                     },
-                    "cortex-debug.openocdPath": {
+                    "cortex-gdb.openocdPath": {
                         "type": [
                             "string",
                             "null"
@@ -199,7 +199,7 @@
                         "default": null,
                         "description": "Path to the OpenOCD GDB Server executable. If not set then openocd (openocd.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.openocdPath.linux": {
+                    "cortex-gdb.openocdPath.linux": {
                         "type": [
                             "string",
                             "null"
@@ -207,7 +207,7 @@
                         "default": null,
                         "description": "Path to the OpenOCD GDB Server executable. If not set then openocd (openocd.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.openocdPath.osx": {
+                    "cortex-gdb.openocdPath.osx": {
                         "type": [
                             "string",
                             "null"
@@ -215,7 +215,7 @@
                         "default": null,
                         "description": "Path to the OpenOCD GDB Server executable. If not set then openocd (openocd.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.openocdPath.windows": {
+                    "cortex-gdb.openocdPath.windows": {
                         "type": [
                             "string",
                             "null"
@@ -223,7 +223,7 @@
                         "default": null,
                         "description": "Path to the OpenOCD GDB Server executable. If not set then openocd (openocd.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.pyocdPath": {
+                    "cortex-gdb.pyocdPath": {
                         "type": [
                             "string",
                             "null"
@@ -231,7 +231,7 @@
                         "default": null,
                         "description": "Path to the PyOCD GDB Server executable. If not set then pyocd-gdbserver must be on the system path."
                     },
-                    "cortex-debug.pyocdPath.linux": {
+                    "cortex-gdb.pyocdPath.linux": {
                         "type": [
                             "string",
                             "null"
@@ -239,7 +239,7 @@
                         "default": null,
                         "description": "Path to the PyOCD GDB Server executable. If not set then pyocd-gdbserver must be on the system path."
                     },
-                    "cortex-debug.pyocdPath.osx": {
+                    "cortex-gdb.pyocdPath.osx": {
                         "type": [
                             "string",
                             "null"
@@ -247,7 +247,7 @@
                         "default": null,
                         "description": "Path to the PyOCD GDB Server executable. If not set then pyocd-gdbserver must be on the system path."
                     },
-                    "cortex-debug.pyocdPath.windows": {
+                    "cortex-gdb.pyocdPath.windows": {
                         "type": [
                             "string",
                             "null"
@@ -255,7 +255,7 @@
                         "default": null,
                         "description": "Path to the PyOCD GDB Server executable. If not set then pyocd-gdbserver must be on the system path."
                     },
-                    "cortex-debug.PEGDBServerPath": {
+                    "cortex-gdb.PEGDBServerPath": {
                         "type": [
                             "string",
                             "null"
@@ -263,7 +263,7 @@
                         "default": null,
                         "description": "Path to the PEMicro GDB Server. If not set then PEGDBServer (pegdbserver_console.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.PEGDBServerPath.linux": {
+                    "cortex-gdb.PEGDBServerPath.linux": {
                         "type": [
                             "string",
                             "null"
@@ -271,7 +271,7 @@
                         "default": null,
                         "description": "Path to the PEMicro GDB Server. If not set then PEGDBServer (pegdbserver_console.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.PEGDBServerPath.osx": {
+                    "cortex-gdb.PEGDBServerPath.osx": {
                         "type": [
                             "string",
                             "null"
@@ -279,7 +279,7 @@
                         "default": null,
                         "description": "Path to the PEMicro GDB Server. If not set then PEGDBServer (pegdbserver_console.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.PEGDBServerPath.windows": {
+                    "cortex-gdb.PEGDBServerPath.windows": {
                         "type": [
                             "string",
                             "null"
@@ -287,7 +287,7 @@
                         "default": null,
                         "description": "Path to the PEMicro GDB Server. If not set then PEGDBServer (pegdbserver_console.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.stutilPath": {
+                    "cortex-gdb.stutilPath": {
                         "type": [
                             "string",
                             "null"
@@ -295,7 +295,7 @@
                         "default": null,
                         "description": "Path to the Texane's ST-Util GDB Server executable. If not set then st-util (st-util.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.stutilPath.linux": {
+                    "cortex-gdb.stutilPath.linux": {
                         "type": [
                             "string",
                             "null"
@@ -303,7 +303,7 @@
                         "default": null,
                         "description": "Path to the Texane's ST-Util GDB Server executable. If not set then st-util (st-util.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.stutilPath.osx": {
+                    "cortex-gdb.stutilPath.osx": {
                         "type": [
                             "string",
                             "null"
@@ -311,7 +311,7 @@
                         "default": null,
                         "description": "Path to the Texane's ST-Util GDB Server executable. If not set then st-util (st-util.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.stutilPath.windows": {
+                    "cortex-gdb.stutilPath.windows": {
                         "type": [
                             "string",
                             "null"
@@ -319,7 +319,7 @@
                         "default": null,
                         "description": "Path to the Texane's ST-Util GDB Server executable. If not set then st-util (st-util.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.stlinkPath": {
+                    "cortex-gdb.stlinkPath": {
                         "type": [
                             "string",
                             "null"
@@ -327,7 +327,7 @@
                         "default": null,
                         "description": "Path to the ST-LINK_gdbserver executable. If not set then ST-LINK_gdbserver (ST-LINK_gdbserver.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.stlinkPath.linux": {
+                    "cortex-gdb.stlinkPath.linux": {
                         "type": [
                             "string",
                             "null"
@@ -335,7 +335,7 @@
                         "default": null,
                         "description": "Path to the ST-LINK_gdbserver executable. If not set then ST-LINK_gdbserver (ST-LINK_gdbserver.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.stlinkPath.osx": {
+                    "cortex-gdb.stlinkPath.osx": {
                         "type": [
                             "string",
                             "null"
@@ -343,7 +343,7 @@
                         "default": null,
                         "description": "Path to the ST-LINK_gdbserver executable. If not set then ST-LINK_gdbserver (ST-LINK_gdbserver.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.stlinkPath.windows": {
+                    "cortex-gdb.stlinkPath.windows": {
                         "type": [
                             "string",
                             "null"
@@ -351,7 +351,7 @@
                         "default": null,
                         "description": "Path to the ST-LINK_gdbserver executable. If not set then ST-LINK_gdbserver (ST-LINK_gdbserver.exe on Windows) must be on the system path."
                     },
-                    "cortex-debug.stm32cubeprogrammer": {
+                    "cortex-gdb.stm32cubeprogrammer": {
                         "type": [
                             "string",
                             "null"
@@ -359,7 +359,7 @@
                         "default": null,
                         "description": "This path is normally resolved to the installed STM32CubeIDE or STM32CubeProgrammer but can be overridden here."
                     },
-                    "cortex-debug.stm32cubeprogrammer.linux": {
+                    "cortex-gdb.stm32cubeprogrammer.linux": {
                         "type": [
                             "string",
                             "null"
@@ -367,7 +367,7 @@
                         "default": null,
                         "description": "This path is normally resolved to the installed STM32CubeIDE or STM32CubeProgrammer but can be overridden here."
                     },
-                    "cortex-debug.stm32cubeprogrammer.osx": {
+                    "cortex-gdb.stm32cubeprogrammer.osx": {
                         "type": [
                             "string",
                             "null"
@@ -375,7 +375,7 @@
                         "default": null,
                         "description": "This path is normally resolved to the installed STM32CubeIDE or STM32CubeProgrammer but can be overridden here."
                     },
-                    "cortex-debug.stm32cubeprogrammer.windows": {
+                    "cortex-gdb.stm32cubeprogrammer.windows": {
                         "type": [
                             "string",
                             "null"
@@ -389,12 +389,12 @@
                 "type": "object",
                 "title": "Miscellaneous",
                 "properties": {
-                    "cortex-debug.enableTelemetry": {
+                    "cortex-gdb.enableTelemetry": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Enable Telemetry for the Cortex-Debug Extension. Reporting will also respect the global telemetry.enableTelemetry setting."
+                        "description": "Enable Telemetry for the Cortex-GDB Extension. Reporting will also respect the global telemetry.enableTelemetry setting."
                     },
-                    "cortex-debug.dbgServerLogfile": {
+                    "cortex-gdb.dbgServerLogfile": {
                         "type": [
                             "string",
                             "null"
@@ -407,7 +407,7 @@
         ],
         "commands": [
             {
-                "command": "cortex-debug.resetDevice",
+                "command": "cortex-gdb.resetDevice",
                 "title": "Reset device",
                 "icon": {
                     "dark": "images/reset-dark.svg",
@@ -415,7 +415,7 @@
                 }
             },
             {
-                "command": "cortex-debug.varHexModeTurnOff",
+                "command": "cortex-gdb.varHexModeTurnOff",
                 "title": "Disable Hex mode",
                 "icon": {
                     "light": "images/hex-on-light.svg",
@@ -423,7 +423,7 @@
                 }
             },
             {
-                "command": "cortex-debug.varHexModeTurnOn",
+                "command": "cortex-gdb.varHexModeTurnOn",
                 "title": "Enable Hex mode",
                 "icon": {
                     "light": "images/hex-off-light.svg",
@@ -431,64 +431,64 @@
                 }
             },
             {
-                "command": "cortex-debug.liveWatch.removeExpr",
+                "command": "cortex-gdb.liveWatch.removeExpr",
                 "title": "Remove expression",
                 "icon": "$(close)"
             },
             {
-                "command": "cortex-debug.liveWatch.editExpr",
+                "command": "cortex-gdb.liveWatch.editExpr",
                 "title": "Edit expression",
                 "icon": "$(edit)"
             },
             {
-                "command": "cortex-debug.liveWatch.moveUp",
+                "command": "cortex-gdb.liveWatch.moveUp",
                 "title": "Move expression up",
                 "icon": "$(arrow-up)"
             },
             {
-                "command": "cortex-debug.liveWatch.moveDown",
+                "command": "cortex-gdb.liveWatch.moveDown",
                 "title": "Move expression down",
                 "icon": "$(arrow-down)"
             },
             {
-                "command": "cortex-debug.liveWatch.addToLiveWatch",
+                "command": "cortex-gdb.liveWatch.addToLiveWatch",
                 "title": "Add to Live Watch",
                 "icon": "$(plus)"
             },
             {
-                "category": "Cortex-Debug",
-                "command": "cortex-debug.examineMemory",
+                "category": "Cortex-GDB",
+                "command": "cortex-gdb.examineMemory",
                 "title": "View Memory"
             },
             {
-                "category": "Cortex-Debug",
-                "command": "cortex-debug.examineMemoryLegacy",
+                "category": "Cortex-GDB",
+                "command": "cortex-gdb.examineMemoryLegacy",
                 "title": "View Memory (Legacy)"
             },
             {
-                "category": "Cortex-Debug",
-                "command": "cortex-debug.toggleVariableHexFormat",
+                "category": "Cortex-GDB",
+                "command": "cortex-gdb.toggleVariableHexFormat",
                 "title": "Toggle hex display in Variables window"
             },
             {
-                "category": "Cortex-Debug",
-                "command": "cortex-debug.liveWatch.addExpr",
+                "category": "Cortex-GDB",
+                "command": "cortex-gdb.liveWatch.addExpr",
                 "title": "Add expression to Live Watch window",
                 "icon": "$(plus)"
             }
         ],
         "keybindings": [
             {
-                "command": "cortex-debug.toggleVariableHexFormat",
+                "command": "cortex-gdb.toggleVariableHexFormat",
                 "key": "ctrl+shift+x",
-                "when": "debugType == cortex-debug"
+                "when": "debugType == cortex-gdb"
             }
         ],
         "languages": [
             {
-                "id": "cortex-debug.memoryview",
+                "id": "cortex-gdb.memoryview",
                 "aliases": [
-                    "Cortex-Debug Memory View"
+                    "Cortex-GDB Memory View"
                 ],
                 "extensions": [
                     ".cdmem"
@@ -497,9 +497,9 @@
         ],
         "grammars": [
             {
-                "language": "cortex-debug.memoryview",
-                "scopeName": "source.cortex-debug-memoryview",
-                "path": "./syntaxes/cortex-debug-memoryview.json"
+                "language": "cortex-gdb.memoryview",
+                "scopeName": "source.cortex-gdb-memoryview",
+                "path": "./syntaxes/cortex-gdb-memoryview.json"
             }
         ],
         "breakpoints": [
@@ -525,7 +525,7 @@
                 "language": "s"
             },
             {
-                "language": "cortex-debug.disassembly"
+                "language": "cortex-gdb.disassembly"
             }
         ],
         "debuggers": [
@@ -535,7 +535,7 @@
                         "properties": {
                             "servertype": {
                                 "type": "string",
-                                "description": "GDB Server type - supported types are jlink, openocd, pyocd, pe, stlink, stutil, qemu, bmp and external. For \"external\", [please read our Wiki](https://github.com/Marus/cortex-debug/wiki/External-gdb-server-configuration). The executable in your PATH is used by default, to override this use serverpath.",
+                                "description": "GDB Server type - supported types are jlink, openocd, pyocd, pe, stlink, stutil, qemu, bmp and external. For \"external\", [please read our Wiki](https://github.com/onethinx/cortex-gdb/wiki/External-gdb-server-configuration). The executable in your PATH is used by default, to override this use serverpath.",
                                 "enum": [
                                     "jlink",
                                     "openocd",
@@ -629,7 +629,7 @@
                                 "description": "Deprecated: Restart is now handled by VSCode and it is pretty much the same as Start"
                             },
                             "overrideGDBServerStartedRegex": {
-                                "description": "You can supply a regular expression (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) in the configuration property to override the output from the GDB Server that is looked for to determine if the GDB Server has started. Under most circumstances this will not be necessary - but could be needed as a result of a change in the output of a GDB Server making it incompatible with cortex-debug. This property has no effect for bmp or external GDB Server types.",
+                                "description": "You can supply a regular expression (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) in the configuration property to override the output from the GDB Server that is looked for to determine if the GDB Server has started. Under most circumstances this will not be necessary - but could be needed as a result of a change in the output of a GDB Server making it incompatible with cortex-gdb. This property has no effect for bmp or external GDB Server types.",
                                 "type": "string",
                                 "default": null
                             },
@@ -1071,6 +1071,16 @@
                                 "description": "Show timestamps when 'showDevDebugOutput' is enabled",
                                 "type": "boolean"
                             },
+                            "showServerOutput": {
+                                "enum": [
+                                    "never",
+                                    "always",
+                                    "switch"
+                                ],
+                                "default": "switch",
+                                "description": "Prints server output responses to the console. 'never': no server responses, 'always': all server responses, regardless of debugging state, 'switch': switches from server to GDB when debugging is active",
+                                "type": "string"
+                            },
                             "svdFile": {
                                 "default": null,
                                 "description": "This is for 'XPERIPHERALS' window provided by 'mcu-debug.peripheral-viewer'. It can be a simple file name or more based on a CMSIS pack or deviceName. See 'mcu-debug.peripheral-viewer' for format",
@@ -1103,7 +1113,7 @@
                                     },
                                     "address": {
                                         "type": "string",
-                                        "description": "Address to start searching for the RTT control block. Use \"auto\" for Cortex-Debug to use the address from elf file",
+                                        "description": "Address to start searching for the RTT control block. Use \"auto\" for Cortex-GDB to use the address from elf file",
                                         "default": "auto"
                                     },
                                     "searchSize": {
@@ -1654,7 +1664,7 @@
                         "properties": {
                             "servertype": {
                                 "type": "string",
-                                "description": "GDB Server type - supported types are jlink, openocd, pyocd, pe, stlink, stutil, qemu, bmp and external. For \"external\", [please read our Wiki](https://github.com/Marus/cortex-debug/wiki/External-gdb-server-configuration). The executable in your PATH is used by default, to override this use serverpath.",
+                                "description": "GDB Server type - supported types are jlink, openocd, pyocd, pe, stlink, stutil, qemu, bmp and external. For \"external\", [please read our Wiki](https://github.com/onethinx/cortex-gdb/wiki/External-gdb-server-configuration). The executable in your PATH is used by default, to override this use serverpath.",
                                 "enum": [
                                     "jlink",
                                     "openocd",
@@ -1753,7 +1763,7 @@
                                 "description": "Additional GDB Commands to be executed at the end of the reset sequence"
                             },
                             "overrideGDBServerStartedRegex": {
-                                "description": "You can supply a regular expression (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) in the configuration property to override the output from the GDB Server that is looked for to determine if the GDB Server has started. Under most circumstances this will not be necessary - but could be needed as a result of a change in the output of a GDB Server making it incompatible with cortex-debug. This property has no effect for bmp or external GDB Server types.",
+                                "description": "You can supply a regular expression (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) in the configuration property to override the output from the GDB Server that is looked for to determine if the GDB Server has started. Under most circumstances this will not be necessary - but could be needed as a result of a change in the output of a GDB Server making it incompatible with cortex-gdb. This property has no effect for bmp or external GDB Server types.",
                                 "type": "string",
                                 "default": null
                             },
@@ -1887,6 +1897,11 @@
                                 "default": null,
                                 "description": "For externally (servertype = \"external\") controlled GDB Servers you must specify the GDB target to connect to. This can either be a \"hostname:port\" combination or path to a serial port",
                                 "type": "string"
+                            },
+                            "gdbPort": {
+                                "default": 50000,
+                                "type": "number",
+                                "description": "Port to use for internal GDB server (cortex-gdb will scan a range of 2000 ports starting at gdbPort and use the first free port)"
                             },
                             "runToMain": {
                                 "description": "Deprecated: please use 'runToEntryPoint' instead.",
@@ -2245,6 +2260,16 @@
                                 "description": "Show timestamps when 'showDevDebugOutput' is enabled",
                                 "type": "boolean"
                             },
+                            "showServerOutput": {
+                                "enum": [
+                                    "never",
+                                    "always",
+                                    "switch"
+                                ],
+                                "default": "switch",
+                                "description": "Prints server output responses to the console. 'never': no server responses, 'always': all server responses, regardless of debugging state, 'switch': switches from server to GDB when debugging is active",
+                                "type": "string"
+                            },
                             "svdFile": {
                                 "default": null,
                                 "description": "This is for 'XPERIPHERALS' window provided by 'mcu-debug.peripheral-viewer'. It can be a simple file name or more based on a CMSIS pack or deviceName. See 'mcu-debug.peripheral-viewer' for format",
@@ -2277,7 +2302,7 @@
                                     },
                                     "address": {
                                         "type": "string",
-                                        "description": "Address to start searching for the RTT control block. Use \"auto\" for Cortex-Debug to use the address from elf file",
+                                        "description": "Address to start searching for the RTT control block. Use \"auto\" for Cortex-GDB to use the address from elf file",
                                         "default": "auto"
                                     },
                                     "searchSize": {
@@ -2832,14 +2857,14 @@
                             "executable": "${1:./bin/executable.elf}",
                             "name": "${6:Debug with JLink}",
                             "request": "launch",
-                            "type": "cortex-debug",
+                            "type": "cortex-gdb",
                             "device": "",
                             "runToEntryPoint": "main",
                             "showDevDebugOutput": "none",
                             "servertype": "jlink"
                         },
                         "description": "Debugs an embedded ARM Cortex-M microcontroller using GDB + JLink",
-                        "label": "Cortex Debug: JLink"
+                        "label": "Cortex GDB: JLink"
                     },
                     {
                         "body": {
@@ -2847,7 +2872,7 @@
                             "executable": "${1:./bin/executable.elf}",
                             "name": "${6:Debug with OpenOCD}",
                             "request": "launch",
-                            "type": "cortex-debug",
+                            "type": "cortex-gdb",
                             "servertype": "openocd",
                             "configFiles": [],
                             "searchDir": [],
@@ -2855,7 +2880,7 @@
                             "showDevDebugOutput": "none"
                         },
                         "description": "Debugs an embedded ARM Cortex-M microcontroller using GDB + OpenOCD",
-                        "label": "Cortex Debug: OpenOCD"
+                        "label": "Cortex GDB: OpenOCD"
                     },
                     {
                         "body": {
@@ -2863,13 +2888,13 @@
                             "executable": "${1:./bin/executable.elf}",
                             "name": "${6:Debug with ST-Link}",
                             "request": "launch",
-                            "type": "cortex-debug",
+                            "type": "cortex-gdb",
                             "runToEntryPoint": "main",
                             "showDevDebugOutput": "none",
                             "servertype": "stlink"
                         },
                         "description": "Debugs an embedded ARM Cortex-M microcontroller using GDB + STMicroelectronic's ST-LINK_gdbserver part of STM32CubeIDE",
-                        "label": "Cortex Debug: ST-LINK"
+                        "label": "Cortex GDB: ST-LINK"
                     },
                     {
                         "body": {
@@ -2877,13 +2902,13 @@
                             "executable": "${1:./bin/executable.elf}",
                             "name": "${6:Debug with PyOCD}",
                             "request": "launch",
-                            "type": "cortex-debug",
+                            "type": "cortex-gdb",
                             "runToEntryPoint": "main",
                             "showDevDebugOutput": "none",
                             "servertype": "pyocd"
                         },
                         "description": "Debugs an embedded ARM Cortex-M microcontroller using GDB + PyOCD",
-                        "label": "Cortex Debug: PyOCD"
+                        "label": "Cortex GDB: PyOCD"
                     },
                     {
                         "body": {
@@ -2891,19 +2916,19 @@
                             "executable": "${1:./bin/executable.elf}",
                             "name": "${6:Debug with ST-Util}",
                             "request": "launch",
-                            "type": "cortex-debug",
+                            "type": "cortex-gdb",
                             "runToEntryPoint": "main",
                             "showDevDebugOutput": "none",
                             "servertype": "stutil"
                         },
                         "description": "Debugs an embedded ARM Cortex-M microcontroller using GDB + Texane's st-util GDB Server (https://github.com/texane/stlink)",
-                        "label": "Cortex Debug: ST-Util"
+                        "label": "Cortex GDB: ST-Util"
                     }
                 ],
-                "label": "Cortex Debug",
+                "label": "Cortex DBG",
                 "program": "./dist/debugadapter.js",
                 "runtime": "node",
-                "type": "cortex-debug",
+                "type": "cortex-gdb",
                 "variables": {},
                 "languages": [
                     "c",
@@ -2915,96 +2940,96 @@
         "menus": {
             "commandPalette": [
                 {
-                    "command": "cortex-debug.examineMemory",
-                    "when": "debugType == cortex-debug"
+                    "command": "cortex-gdb.examineMemory",
+                    "when": "debugType == cortex-gdb"
                 },
                 {
-                    "command": "cortex-debug.examineMemoryLegacy",
-                    "when": "debugType == cortex-debug"
+                    "command": "cortex-gdb.examineMemoryLegacy",
+                    "when": "debugType == cortex-gdb"
                 },
                 {
-                    "command": "cortex-debug.resetDevice",
-                    "when": "debugType == cortex-debug"
+                    "command": "cortex-gdb.resetDevice",
+                    "when": "debugType == cortex-gdb"
                 },
                 {
-                    "command": "cortex-debug.toggleVariableHexFormat",
-                    "when": "debugType == cortex-debug"
+                    "command": "cortex-gdb.toggleVariableHexFormat",
+                    "when": "debugType == cortex-gdb"
                 },
                 {
-                    "command": "cortex-debug.liveWatch.addExpr",
-                    "when": "debugType === cortex-debug"
+                    "command": "cortex-gdb.liveWatch.addExpr",
+                    "when": "debugType === cortex-gdb"
                 }
             ],
             "debug/toolBar": [
                 {
-                    "command": "cortex-debug.resetDevice",
+                    "command": "cortex-gdb.resetDevice",
                     "group": "navigation",
-                    "when": "debugType == cortex-debug"
+                    "when": "debugType == cortex-gdb"
                 }
             ],
             "view/item/context": [
                 {
-                    "command": "cortex-debug.liveWatch.editExpr",
-                    "when": "view == cortex-debug.liveWatch && viewItem == expression",
+                    "command": "cortex-gdb.liveWatch.editExpr",
+                    "when": "view == cortex-gdb.liveWatch && viewItem == expression",
                     "group": "inline"
                 },
                 {
-                    "command": "cortex-debug.liveWatch.moveUp",
-                    "when": "view == cortex-debug.liveWatch && viewItem == expression",
+                    "command": "cortex-gdb.liveWatch.moveUp",
+                    "when": "view == cortex-gdb.liveWatch && viewItem == expression",
                     "group": "inline"
                 },
                 {
-                    "command": "cortex-debug.liveWatch.moveDown",
-                    "when": "view == cortex-debug.liveWatch && viewItem == expression",
+                    "command": "cortex-gdb.liveWatch.moveDown",
+                    "when": "view == cortex-gdb.liveWatch && viewItem == expression",
                     "group": "inline"
                 },
                 {
-                    "command": "cortex-debug.liveWatch.removeExpr",
-                    "when": "view == cortex-debug.liveWatch && viewItem == expression",
+                    "command": "cortex-gdb.liveWatch.removeExpr",
+                    "when": "view == cortex-gdb.liveWatch && viewItem == expression",
                     "group": "inline"
                 }
             ],
             "view/title": [
                 {
-                    "command": "cortex-debug.liveWatch.addExpr",
-                    "when": "view == cortex-debug.liveWatch",
+                    "command": "cortex-gdb.liveWatch.addExpr",
+                    "when": "view == cortex-gdb.liveWatch",
                     "group": "navigation"
                 },
                 {
-                    "command": "cortex-debug.varHexModeTurnOn",
-                    "when": "view == workbench.debug.variablesView && inDebugMode && debugType == 'cortex-debug' && debugState == stopped &&  cortex-debug:variableUseNaturalFormat",
+                    "command": "cortex-gdb.varHexModeTurnOn",
+                    "when": "view == workbench.debug.variablesView && inDebugMode && debugType == 'cortex-gdb' && debugState == stopped &&  cortex-gdb:variableUseNaturalFormat",
                     "group": "navigation"
                 },
                 {
-                    "command": "cortex-debug.varHexModeTurnOff",
-                    "when": "view == workbench.debug.variablesView && inDebugMode && debugType == 'cortex-debug' && debugState == stopped && !cortex-debug:variableUseNaturalFormat",
+                    "command": "cortex-gdb.varHexModeTurnOff",
+                    "when": "view == workbench.debug.variablesView && inDebugMode && debugType == 'cortex-gdb' && debugState == stopped && !cortex-gdb:variableUseNaturalFormat",
                     "group": "navigation"
                 },
                 {
-                    "command": "cortex-debug.varHexModeTurnOn",
-                    "when": "view == workbench.debug.watchExpressionsView && inDebugMode && debugType == 'cortex-debug' && debugState == stopped &&  cortex-debug:variableUseNaturalFormat",
+                    "command": "cortex-gdb.varHexModeTurnOn",
+                    "when": "view == workbench.debug.watchExpressionsView && inDebugMode && debugType == 'cortex-gdb' && debugState == stopped &&  cortex-gdb:variableUseNaturalFormat",
                     "group": "navigation"
                 },
                 {
-                    "command": "cortex-debug.varHexModeTurnOff",
-                    "when": "view == workbench.debug.watchExpressionsView && inDebugMode && debugType == 'cortex-debug' && debugState == stopped && !cortex-debug:variableUseNaturalFormat",
+                    "command": "cortex-gdb.varHexModeTurnOff",
+                    "when": "view == workbench.debug.watchExpressionsView && inDebugMode && debugType == 'cortex-gdb' && debugState == stopped && !cortex-gdb:variableUseNaturalFormat",
                     "group": "navigation"
                 },
                 {
-                    "command": "cortex-debug.varHexModeTurnOn",
-                    "when": "view == cortex-debug.liveWatch && inDebugMode && debugType == 'cortex-debug' && debugState == stopped &&  cortex-debug:variableUseNaturalFormat",
+                    "command": "cortex-gdb.varHexModeTurnOn",
+                    "when": "view == cortex-gdb.liveWatch && inDebugMode && debugType == 'cortex-gdb' && debugState == stopped &&  cortex-gdb:variableUseNaturalFormat",
                     "group": "navigation"
                 },
                 {
-                    "command": "cortex-debug.varHexModeTurnOff",
-                    "when": "view == cortex-debug.liveWatch && inDebugMode && debugType == 'cortex-debug' && debugState == stopped && !cortex-debug:variableUseNaturalFormat",
+                    "command": "cortex-gdb.varHexModeTurnOff",
+                    "when": "view == cortex-gdb.liveWatch && inDebugMode && debugType == 'cortex-gdb' && debugState == stopped && !cortex-gdb:variableUseNaturalFormat",
                     "group": "navigation"
                 }
             ],
             "debug/variables/context": [
                 {
-                    "command": "cortex-debug.liveWatch.addToLiveWatch",
-                    "when": "inDebugMode && debugType == 'cortex-debug' && debugState == stopped",
+                    "command": "cortex-gdb.liveWatch.addToLiveWatch",
+                    "when": "inDebugMode && debugType == 'cortex-gdb' && debugState == stopped",
                     "group": "navigation"
                 }
             ]
@@ -3012,9 +3037,9 @@
         "views": {
             "debug": [
                 {
-                    "id": "cortex-debug.liveWatch",
+                    "id": "cortex-gdb.liveWatch",
                     "name": "Cortex Live Watch",
-                    "when": "debugType == cortex-debug"
+                    "when": "debugType == cortex-gdb"
                 }
             ]
         }
@@ -3057,10 +3082,10 @@
         "ts-loader": "^9.5.2",
         "typescript": "^5.7.3",
         "typescript-eslint": "^8.20.0",
-        "webpack": "^5.97.1",
+        "webpack": "^5.99.8",
         "webpack-cli": "^6.0.1"
     },
-    "displayName": "Cortex-Debug",
+    "displayName": "Cortex-GDB",
     "engines": {
         "vscode": "^1.69.0"
     },
@@ -3078,15 +3103,15 @@
         "mcu-debug.peripheral-viewer"
     ],
     "main": "./dist/extension.js",
-    "name": "cortex-debug",
-    "publisher": "marus25",
+    "name": "cortex-gdb",
+    "publisher": "Onethinx",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Marus/cortex-debug.git"
+        "url": "https://github.com/onethinx/cortex-gdb.git"
     },
     "bugs": {
-        "url": "https://github.com/Marus/cortex-debug/issues"
+        "url": "https://github.com/onethinx/cortex-gdb/issues"
     },
     "scripts": {
         "vscode:prepublish": "npm run lint && webpack --mode production && node dist/docgen.js && npm ci -C binary_modules --omit dev && cp -a binary_modules/node_modules dist/",
