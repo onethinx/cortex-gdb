@@ -140,7 +140,7 @@ export class GDBServer extends EventEmitter {
     }
 
     private onStdout(data) {
-        this.sendToConsole(data);        // Send it without any processing or buffering
+        this.sendToConsole(data, 'stdout');        // Send it without any processing or buffering
         if (this.initResolve) {
             if (typeof data === 'string') {
                 this.outBuffer += data;
@@ -164,7 +164,7 @@ export class GDBServer extends EventEmitter {
     }
 
     private onStderr(data) {
-        this.sendToConsole(data);        // Send it without any processing or buffering
+        this.sendToConsole(data, 'stderr');        // Send it without any processing or buffering
         if (this.initResolve) {
             if (typeof data === 'string') {
                 this.errBuffer += data;
@@ -205,7 +205,8 @@ export class GDBServer extends EventEmitter {
                 if (code !== 'ECONNRESET') {
                     // Can happen if extension exited while we are still running. Rare, generally a bug in VSCode or frontend
                     const msg = `Error: unexpected socket error ${e}. Please report this problem`;
-                    this.emit('output', msg + '\n');
+                    //this.emit('output', msg + '\n');
+                    this.emit('info', msg + '\n');
                     console.error(msg);
                     if (!this.consoleSocket) {  // We were already connected
                         reject(e);
@@ -225,9 +226,10 @@ export class GDBServer extends EventEmitter {
         });
     }
 
-    private sendToConsole(data: string | Buffer) {
+    private sendToConsole(data: string | Buffer, type: string) {
         if (this.consoleSocket) {
             this.consoleSocket.write(data);
+            this.emit('output', { type, msg: data.toString() });
         } else {
             // This can happen if the socket is already closed (extension quit while in a debug session)
             console.error('sendToConsole: console not open. How did this happen?');

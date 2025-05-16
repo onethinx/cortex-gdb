@@ -261,6 +261,7 @@ export interface ConfigurationArguments extends DebugProtocol.LaunchRequestArgum
     servertype: string;
     serverpath: string;
     gdbPath: string;
+    gdbPort: number;
     gdbServerConsolePort: number;
     objdumpPath: string;
     serverArgs: string[];
@@ -295,6 +296,7 @@ export interface ConfigurationArguments extends DebugProtocol.LaunchRequestArgum
     showDevDebugOutput: ADAPTER_DEBUG_MODE;
     pvtShowDevDebugOutput: ADAPTER_DEBUG_MODE;
     showDevDebugTimestamps: boolean;
+    showServerOutput: string;
     cwd: string;
     extensionPath: string;
     rtos: string;

@@ -240,6 +240,10 @@ export class GDBDebugSession extends LoggingDebugSession {
     private stopped: boolean = false;
     private stoppedReason: string = '';
     private continuing: boolean = false;
+    private adapterOutput = {
+        stderr: '',
+        stdout: ''
+    };
 
     // stoppedThreadId represents where execution stopped because of a pause, exception, step or breakpoint
     // Generally continuing execution can only work from that thread for embedded processors. It is bit
@@ -294,7 +298,8 @@ export class GDBDebugSession extends LoggingDebugSession {
         this.miDebugger.on('quit', this.quitEvent.bind(this));
         this.miDebugger.on('exited-normally', this.quitEvent.bind(this));
         this.miDebugger.on('stopped', this.stopEvent.bind(this));
-        this.miDebugger.on('msg', this.handleMsg.bind(this));
+        // this.miDebugger.on('msg', this.handleMsg.bind(this));
+        this.miDebugger.on('msg', this.handleDebuggerOutput.bind(this));
         this.miDebugger.on('breakpoint', this.handleBreakpoint.bind(this));
         this.miDebugger.on('watchpoint', this.handleWatchpoint.bind(this, 'hit'));
         this.miDebugger.on('watchpoint-scope', this.handleWatchpoint.bind(this, 'scope'));
@@ -522,7 +527,7 @@ export class GDBDebugSession extends LoggingDebugSession {
 
     private getTCPPorts(useParent): Thenable<void> {
         return new Promise((resolve, reject) => {
-            const startPort = 50000;
+            const gdbPort = this.args.gdbPort || 50000;
             if (useParent) {
                 this.ports = this.args.pvtPorts = this.args.pvtParent.pvtPorts;
                 this.serverController.setPorts(this.ports);
@@ -532,7 +537,7 @@ export class GDBDebugSession extends LoggingDebugSession {
                 return resolve();
             }
             const totalPortsNeeded = this.calculatePortsNeeded();
-            const portFinderOpts = { min: startPort, max: 52000, retrieve: totalPortsNeeded, consecutive: true };
+            const portFinderOpts = { min: gdbPort, max: gdbPort + 2000, retrieve: totalPortsNeeded, consecutive: true };
             TcpPortScanner.findFreePorts(portFinderOpts, GDBServer.LOCALHOST).then((ports) => {
                 this.createPortsMap(ports);
                 this.serverController.setPorts(this.ports);
@@ -594,7 +599,10 @@ export class GDBDebugSession extends LoggingDebugSession {
 
                 if (executable) {
                     this.handleMsg('log', 'Launching gdb-server: ' + quoteShellCmdLine([executable, ...args]) + '\n');
-                    this.handleMsg('stdout', `    Please check TERMINAL tab (gdb-server) for output from ${executable}` + '\n');
+                    if (this.args.showServerOutput == 'never')
+                    {
+                        this.handleMsg('stdout', `    Please check TERMINAL tab (gdb-server) for output from ${executable}` + '\n');
+                    }
                 }
 
                 const consolePort = (this.args as any).gdbServerConsolePort;
@@ -611,6 +619,7 @@ export class GDBDebugSession extends LoggingDebugSession {
                     }
                 }
                 this.server = new GDBServer(serverCwd, executable, args, initMatch, gdbPort, consolePort);
+                this.server.on('output', this.handleAdapterOutput.bind(this));
                 this.server.on('exit', () => {
                     if (this.started) {
                         this.serverQuitEvent();
@@ -620,7 +629,11 @@ export class GDBDebugSession extends LoggingDebugSession {
                         doResolve();
                     } else {
                         const server = this.serverController?.name || this.args.servertype;
-                        const msg = `${server}: GDB Server Quit Unexpectedly. See gdb-server output in TERMINAL tab for more details.`;
+                        let msg = `${server}: GDB Server Quit Unexpectedly.`;
+                        if (this.args.showServerOutput == 'never')
+                        {
+                            msg += ' See gdb-server output in TERMINAL tab for more details.';
+                        }
                         this.launchErrorResponse(response, 103, msg);
                         doResolve();
                     }
@@ -1736,6 +1749,31 @@ export class GDBDebugSession extends LoggingDebugSession {
         this.sendEvent(event);
     }
 
+    protected handleAdapterOutput({type, msg}: {type: string, msg: string}) {
+        const showServerOutput = this.args.showServerOutput || 'switch';
+        if ((!this.debugReady && showServerOutput === 'switch') || showServerOutput === 'always')
+        {
+            try {
+                const lines = (this.adapterOutput[type] + msg).split(/\r?\n|\r/);
+                this.adapterOutput[type] = lines.pop();
+                lines.forEach((line) => {
+                    this.sendEvent(new OutputEvent('S: ' + line + '\n', type));
+                });
+            }
+            catch (e) {
+                this.sendEvent(new OutputEvent('S: ' + e.toString() + '\n', type));
+            }
+        }
+    }
+
+    protected handleDebuggerOutput(type: string, msg: string) {
+        const showServerOutput = this.args.showServerOutput || 'switch';
+        if (this.debugReady || showServerOutput !== 'switch')
+        {
+            this.sendEvent(new OutputEvent('G: ' + msg, type));
+        }
+    }
+
     // TODO: We should add more features here. type could be a message for error, warning, info and we auto prepend
     //   the tag for it. For consistency. Also make type an enum
     public handleMsg(type: string, msg: string) {
@@ -1743,15 +1781,15 @@ export class GDBDebugSession extends LoggingDebugSession {
             // Filter out unnecessary radix change messages
             return;
         }
-        if (type === 'target') { type = 'stdout'; }
-        if (type === 'log') { type = 'stderr'; }
+        // 3 types in different colors: console (yellow?), default/stdout (blue?) and stderr (red?)
+        if (type === 'log') { type = 'console'; }
         msg = this.wrapTimeStamp(msg);
         if (this.args.pvtShowDevDebugOutput === ADAPTER_DEBUG_MODE.VSCODE) {
             logger.setup(Logger.LogLevel.Stop, false, false);
-            this.sendEvent(new OutputEvent(msg, type));
+            this.sendEvent(new OutputEvent('I: ' + msg, type));
             logger.setup(Logger.LogLevel.Verbose, false, false);
         } else {
-            this.sendEvent(new OutputEvent(msg, type));
+            this.sendEvent(new OutputEvent('I: ' + msg, type));
         }
     }
 
