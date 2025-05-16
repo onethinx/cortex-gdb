@@ -205,7 +205,6 @@ export class GDBServer extends EventEmitter {
                 if (code !== 'ECONNRESET') {
                     // Can happen if extension exited while we are still running. Rare, generally a bug in VSCode or frontend
                     const msg = `Error: unexpected socket error ${e}. Please report this problem`;
-                    //this.emit('output', msg + '\n');
                     this.emit('info', msg + '\n');
                     console.error(msg);
                     if (!this.consoleSocket) {  // We were already connected

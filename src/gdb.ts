@@ -599,8 +599,7 @@ export class GDBDebugSession extends LoggingDebugSession {
 
                 if (executable) {
                     this.handleMsg('log', 'Launching gdb-server: ' + quoteShellCmdLine([executable, ...args]) + '\n');
-                    if (this.args.showServerOutput == 'never')
-                    {
+                    if (this.args.showServerOutput == 'never') {
                         this.handleMsg('stdout', `    Please check TERMINAL tab (gdb-server) for output from ${executable}` + '\n');
                     }
                 }
@@ -630,8 +629,7 @@ export class GDBDebugSession extends LoggingDebugSession {
                     } else {
                         const server = this.serverController?.name || this.args.servertype;
                         let msg = `${server}: GDB Server Quit Unexpectedly.`;
-                        if (this.args.showServerOutput == 'never')
-                        {
+                        if (this.args.showServerOutput == 'never') {
                             msg += ' See gdb-server output in TERMINAL tab for more details.';
                         }
                         this.launchErrorResponse(response, 103, msg);
@@ -1749,18 +1747,16 @@ export class GDBDebugSession extends LoggingDebugSession {
         this.sendEvent(event);
     }
 
-    protected handleAdapterOutput({type, msg}: {type: string, msg: string}) {
+    protected handleAdapterOutput({ type, msg }: { type: string; msg: string }) {
         const showServerOutput = this.args.showServerOutput || 'switch';
-        if ((!this.debugReady && showServerOutput === 'switch') || showServerOutput === 'always')
-        {
+        if ((!this.debugReady && showServerOutput === 'switch') || showServerOutput === 'always') {
             try {
                 const lines = (this.adapterOutput[type] + msg).split(/\r?\n|\r/);
                 this.adapterOutput[type] = lines.pop();
                 lines.forEach((line) => {
                     this.sendEvent(new OutputEvent('S: ' + line + '\n', type));
                 });
-            }
-            catch (e) {
+            } catch (e) {
                 this.sendEvent(new OutputEvent('S: ' + e.toString() + '\n', type));
             }
         }
@@ -1768,8 +1764,7 @@ export class GDBDebugSession extends LoggingDebugSession {
 
     protected handleDebuggerOutput(type: string, msg: string) {
         const showServerOutput = this.args.showServerOutput || 'switch';
-        if (this.debugReady || showServerOutput !== 'switch')
-        {
+        if (this.debugReady || showServerOutput !== 'switch') {
             this.sendEvent(new OutputEvent('G: ' + msg, type));
         }
     }
