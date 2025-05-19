@@ -497,6 +497,9 @@ export class CortexDebugExtension {
                     case 'error':
                         vscode.window.showErrorMessage(msg);
                         break;
+                    case 'error-confirm':
+                        vscode.window.showErrorMessage(msg, { modal: true });
+                        break;
                     default:
                         vscode.window.showInformationMessage(msg);
                         break;

@@ -634,13 +634,15 @@ export class MI2 extends EventEmitter implements IBackend {
                 bkptArgs += `-c "${breakpoint.condition}" `;
             }
 
+            let cmd = breakpoint.logMessage ? 'dprintf-insert' : 'break-insert';
+
             if (breakpoint.raw) {
-                bkptArgs += '*' + escape(breakpoint.raw);
+                bkptArgs += escape(breakpoint.raw);
+                cmd = 'break-watch';
             } else {
                 bkptArgs += '"' + escape(breakpoint.file) + ':' + breakpoint.line + '"';
             }
 
-            const cmd = breakpoint.logMessage ? 'dprintf-insert' : 'break-insert';
             if (breakpoint.logMessage) {
                 bkptArgs += ' ' + breakpoint.logMessage;
             }

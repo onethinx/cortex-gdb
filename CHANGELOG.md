@@ -1,4 +1,10 @@
 # ChangeLog
+# V1.0.3
+
+* Implemented Debug watchpoints (watch breakpoints).
+  - use Breakpoints window and tap + to give the name of the variable to watch
+* Fix: showServerOutput default = switch
+
 # V1.0.2
 * Implemented default port setting for GDB - server communication
      - use "gdbPort" setting in launch.json to change the default port.

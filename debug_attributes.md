@@ -33,8 +33,8 @@ If the type is marked as `{...}` it means that it is a complex item can have mul
 | device | string | Both | Target Device Identifier |
 | executable | string | Both | Path of executable for symbols and program information. See also `loadFiles`, `symbolFiles` |
 | gdbPath | string | Both | This setting can be used to override the GDB path user/workspace setting for a particular launch configuration. This should be the full pathname to the executable (or name of the executable if it is in your PATH). Note that other toolchain executables with the configured prefix must still be available. |
-| gdbPort | number | Launch | Port to use for internal GDB server (cortex-gdb will scan a range of 2000 ports starting at gdbPort and use the first free port) |
-| gdbTarget | string | Both | For externally (servertype = "external") controlled GDB Servers you must specify the GDB target to connect to. This can either be a "hostname:port" combination or path to a serial port |
+| gdbPort | number | Both | Port to use for internal GDB server (cortex-gdb will scan a range of 2000 ports starting at gdbPort and use the first free port). |
+| gdbTarget | string | Both | For externally (servertype = "external") controlled GDB Servers you must specify the GDB target to connect to. This can either be a "hostname:port" combination or path to a serial port. |
 | graphConfig | {object} | Both | Description of how graphing can be done. See our Wiki for details |
 | interface | string | Both | Debug Interface type to use for connections (defaults to SWD) - Used for J-Link, ST-LINK and BMP probes. |
 | ipAddress | string | Both | IP Address for networked J-Link Adapter |
@@ -44,6 +44,7 @@ If the type is marked as `{...}` it means that it is a complex item can have mul
 | liveWatch<br>.samplesPerSecond | number | Both | Maximum number of samples per second. Different from GUI refresh-rate, which is a user/workspace setting |
 | loadFiles | string[] | Launch | List of files (hex/bin/elf files) to load/program instead of the executable file. Symbols are not loaded (see `symbolFiles`). Can be an empty list to specify none. If this property does not exist, then the executable is used to program the device |
 | machine | string | Both | Machine Type Selection - used for QEMU server type |
+| maxBreakpoints | number | Both | The maximum amount of breakpoints available on this core. |
 | numberOfProcessors | number | Both | Number of processors/cores in the target device. |
 | objdumpPath | string | Both | This setting can be used to override the objdump (used to find globals/statics) path user/workspace setting for a particular launch configuration. This should be the full pathname to the executable (or name of the executable if it is in your PATH). Note that other toolchain executables with the configured prefix must still be available. The program 'nm' is also expected alongside |
 | openOCDLaunchCommands | string[] | Both | OpenOCD command(s) after configuration files are loaded (-c options) |

@@ -613,7 +613,7 @@
                                 "default": null,
                                 "type": "array",
                                 "items": "string",
-                                "description": "Override the commands that are normally executed as part of reset-ing the target. When undefined the deprecated overrideRestartCommands is used."
+                                "description": "Override the commands that are normally executed as part of reset-ing the target. When undefined the deprecated overrideRestartCommands is used if it exists."
                             },
                             "postStartSessionCommands": {
                                 "default": [],
@@ -756,8 +756,18 @@
                             },
                             "gdbTarget": {
                                 "default": null,
-                                "description": "For externally (servertype = \"external\") controlled GDB Servers you must specify the GDB target to connect to. This can either be a \"hostname:port\" combination or path to a serial port",
+                                "description": "For externally (servertype = \"external\") controlled GDB Servers you must specify the GDB target to connect to. This can either be a \"hostname:port\" combination or path to a serial port.",
                                 "type": "string"
+                            },
+                            "gdbPort": {
+                                "default": 50000,
+                                "type": "number",
+                                "description": "Port to use for internal GDB server (cortex-gdb will scan a range of 2000 ports starting at gdbPort and use the first free port)."
+                            },
+                            "maxBreakpoints": {
+                                "default": 8,
+                                "type": "number",
+                                "description": "The maximum amount of breakpoints available on this core."
                             },
                             "breakAfterReset": {
                                 "default": false,
@@ -1895,13 +1905,18 @@
                             },
                             "gdbTarget": {
                                 "default": null,
-                                "description": "For externally (servertype = \"external\") controlled GDB Servers you must specify the GDB target to connect to. This can either be a \"hostname:port\" combination or path to a serial port",
+                                "description": "For externally (servertype = \"external\") controlled GDB Servers you must specify the GDB target to connect to. This can either be a \"hostname:port\" combination or path to a serial port.",
                                 "type": "string"
                             },
                             "gdbPort": {
                                 "default": 50000,
                                 "type": "number",
-                                "description": "Port to use for internal GDB server (cortex-gdb will scan a range of 2000 ports starting at gdbPort and use the first free port)"
+                                "description": "Port to use for internal GDB server (cortex-gdb will scan a range of 2000 ports starting at gdbPort and use the first free port)."
+                            },
+                            "maxBreakpoints": {
+                                "default": 100,
+                                "type": "number",
+                                "description": "The maximum amount of breakpoints available on this core."
                             },
                             "runToMain": {
                                 "description": "Deprecated: please use 'runToEntryPoint' instead.",

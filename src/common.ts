@@ -262,6 +262,7 @@ export interface ConfigurationArguments extends DebugProtocol.LaunchRequestArgum
     serverpath: string;
     gdbPath: string;
     gdbPort: number;
+    maxBreakpoints: number;
     gdbServerConsolePort: number;
     objdumpPath: string;
     serverArgs: string[];

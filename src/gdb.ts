@@ -4,6 +4,7 @@
 // * Update setDataBreakpoints to check for frame-id if the 'name' is an expression
 // * Return the new type of busy error for evaluate/memory-requests/disassembly and certain other responses
 //
+
 import {
     Logger, logger, LoggingDebugSession, InitializedEvent, TerminatedEvent,
     ContinuedEvent, OutputEvent, Thread, ThreadEvent,
@@ -211,7 +212,6 @@ export class GDBDebugSession extends LoggingDebugSession {
     public symbolTable: SymbolTable;
     private usingParentServer = false;
     private debugLogFd = -1;
-
     protected variableHandles = new Handles<string | VariableObject | ExtendedVariable>(HandleRegions.VAR_HANDLES_START);
     protected variableHandlesReverse = new Map<string, number>();
     protected quit: boolean;
@@ -2196,110 +2196,86 @@ export class GDBDebugSession extends LoggingDebugSession {
     }
 
     protected setBreakPointsRequest(
-        r: DebugProtocol.SetBreakpointsResponse,
-        a: DebugProtocol.SetBreakpointsArguments): Promise<void> {
+        response: DebugProtocol.SetBreakpointsResponse,
+        args: DebugProtocol.SetBreakpointsArguments
+    ): Promise<void> {
         const doit = (
             response: DebugProtocol.SetBreakpointsResponse,
             args: DebugProtocol.SetBreakpointsArguments,
-            pendContinue: PendingContinue): Promise<void> => {
+            pendContinue: PendingContinue
+        ): Promise<void> => {
             return new Promise(async (resolve) => {
                 const createBreakpoints = async () => {
-                    const currentBreakpoints = (this.breakpointMap.get(args.source.path) || []).map((bp) => bp.number);
+                    const src = args.source.path;
+                    const maxBkpts = this.args.maxBreakpoints?? 8;
+                    // 1) What we currently have in this file
+                    const existing: OurSourceBreakpoint[] = this.breakpointMap.get(src) || [];
+                    const toDeleteIds = existing.map((bp) => bp.number);
 
-                    try {
-                        await this.miDebugger.removeBreakpoints(currentBreakpoints);
-                        for (const old of currentBreakpoints) {
-                            this.breakpointById.delete(old);
-                        }
-                        this.breakpointMap.set(args.source.path, []);
+                    // 2) How many slots remain (excluding this file)
+                    const totalOther = Array
+                        .from(this.breakpointMap.entries())
+                        .filter(([path]) => path !== src)
+                        .reduce((sum, [, arr]) => sum + arr.length, 0);
+                    const slotsLeft = maxBkpts - totalOther;
 
-                        const all: Promise<OurSourceBreakpoint | MIError>[] = [];
-                        const sourcepath = decodeURIComponent(args.source.path);
+                    // 4) Delete all old BPs for this file on the target
+                    await this.miDebugger.removeBreakpoints(toDeleteIds);
+                    for (const id of toDeleteIds) {
+                        this.breakpointById.delete(id);
+                    }
+                    this.breakpointMap.set(src, []);
 
-                        if (sourcepath.startsWith('disassembly:/')) {
-                            let sidx = 13;
-                            if (sourcepath.startsWith('disassembly:///')) { sidx = 15; }
-                            const path = sourcepath.substring(sidx, sourcepath.length - 6); // Account for protocol and extension
-                            const parts = path.split(':::');
-                            let func: string;
-                            let file: string;
-
-                            if (parts.length === 2) {
-                                func = parts[1];
-                                file = parts[0];
-                            } else {
-                                func = parts[0];
-                            }
-
-                            const symbol: SymbolInformation = await this.disassember.getDisassemblyForFunction(func, file);
-
-                            if (symbol) {
-                                args.breakpoints.forEach((brk) => {
-                                    if (brk.line <= symbol.instructions.length) {
-                                        const line = symbol.instructions[brk.line - 1];
-                                        const arg: OurSourceBreakpoint = {
-                                            ...brk,
-                                            file: args.source.path,
-                                            raw: line.address
-                                        };
-                                        all.push(this.miDebugger.addBreakPoint(arg).catch((err: MIError) => err));
-                                    } else {
-                                        all.push(
-                                            Promise.resolve(
-                                                new MIError(
-                                                    `${func} only contains ${symbol.instructions.length} instructions`,
-                                                    'Set breakpoint'
-                                                )
-                                            )
-                                        );
-                                    }
-                                });
-                            }
+                    const ops: Promise<OurSourceBreakpoint | MIError>[] = [];
+                    // Build ops, up to slotsLeft
+                    for (let i = 0; i < args.breakpoints.length; i++) {
+                        if (i < slotsLeft) {
+                            const arg: OurSourceBreakpoint = { ...args.breakpoints[i], file: src };
+                            ops.push(
+                                this.miDebugger.addBreakPoint(arg).catch((e: MIError) => e)
+                            );
                         } else {
-                            args.breakpoints.forEach((brk) => {
-                                const arg: OurSourceBreakpoint = {
-                                    ...brk,
-                                    file: args.source.path
-                                };
-                                all.push(this.miDebugger.addBreakPoint(arg).catch((err: MIError) => err));
-                            });
+                            ops.push(
+                                Promise.resolve(new MIError(`Reached breakpoint limit of ${maxBkpts}`, 'Set breakpoint'))
+                            );
                         }
-
-                        const brkpoints = await Promise.all(all);
-
-                        response.body = {
-                            breakpoints: brkpoints.map((bp) => {
-                                if (bp instanceof MIError) {
-                                    /* Failed breakpoints should be reported with
-                                     * verified: false, so they can be greyed out
-                                     * in the UI. The attached message will be
-                                     * presented as a tooltip.
-                                     */
-                                    return {
-                                        verified: false,
-                                        message: bp.message
-                                    } as DebugProtocol.Breakpoint;
-                                }
-
-                                return {
-                                    line: bp.line,
-                                    id: bp.number,
-                                    instructionReference: bp.address,
-                                    verified: true
-                                };
-                            })
-                        };
-
-                        const bpts: OurSourceBreakpoint[] = brkpoints.filter((bp) => !(bp instanceof MIError)) as OurSourceBreakpoint[];
-                        for (const bpt of bpts) {
-                            this.breakpointById.set(bpt.number, bpt);
-                        }
-                        this.breakpointMap.set(args.source.path, bpts);
-                        this.sendResponse(response);
-                    } catch (msg) {
-                        this.sendErrorResponse(response, 9, msg.toString());
                     }
 
+                    // only warn once if they requested more than slotsLeft
+                    if (args.breakpoints.length > slotsLeft) {
+                        const warn = `Warning: reached breakpoint limit of ${maxBkpts}.\n`;
+                        this.sendEvent(new OutputEvent(warn, 'stderr'));
+                        this.sendEvent(new GenericCustomEvent('popup', {
+                            type: 'error-confirm', message: `Warning: reached breakpoint limit.\n${maxBkpts} max.` }));
+                    }
+
+                    // 7) Await the MI calls and build the DAP response
+                    const results = await Promise.all(ops);
+                    response.body = {
+                        breakpoints: results.map((r) => {
+                            if (r instanceof MIError) {
+                                return {
+                                    verified: false,
+                                    message: r.message
+                                } as DebugProtocol.Breakpoint;
+                            }
+                            return {
+                                line: r.line,
+                                id: r.number,
+                                instructionReference: r.address,
+                                verified: true
+                            };
+                        })
+                    };
+
+                    // 8) Update our maps with the successful ones
+                    const success = results.filter((r) => !(r instanceof MIError)) as OurSourceBreakpoint[];
+                    for (const bpt of success) {
+                        this.breakpointById.set(bpt.number, bpt);
+                    }
+                    this.breakpointMap.set(src, success);
+
+                    this.sendResponse(response);
                     this.continueIfNoMore(pendContinue);
                     resolve();
                 };
@@ -2308,7 +2284,7 @@ export class GDBDebugSession extends LoggingDebugSession {
             });
         };
 
-        return this.allBreakPointsQ.add(doit, r, a);
+        return this.allBreakPointsQ.add(doit, response, args);
     }
 
     protected setInstructionBreakpointsRequest(
