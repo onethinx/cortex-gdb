@@ -4,7 +4,6 @@
 // * Update setDataBreakpoints to check for frame-id if the 'name' is an expression
 // * Return the new type of busy error for evaluate/memory-requests/disassembly and certain other responses
 //
-
 import {
     Logger, logger, LoggingDebugSession, InitializedEvent, TerminatedEvent,
     ContinuedEvent, OutputEvent, Thread, ThreadEvent,
@@ -212,6 +211,7 @@ export class GDBDebugSession extends LoggingDebugSession {
     public symbolTable: SymbolTable;
     private usingParentServer = false;
     private debugLogFd = -1;
+
     protected variableHandles = new Handles<string | VariableObject | ExtendedVariable>(HandleRegions.VAR_HANDLES_START);
     protected variableHandlesReverse = new Map<string, number>();
     protected quit: boolean;
@@ -2207,7 +2207,7 @@ export class GDBDebugSession extends LoggingDebugSession {
             return new Promise(async (resolve) => {
                 const createBreakpoints = async () => {
                     const src = args.source.path;
-                    const maxBkpts = this.args.maxBreakpoints?? 8;
+                    const maxBkpts = this.args.maxBreakpoints ?? 8;
                     // 1) What we currently have in this file
                     const existing: OurSourceBreakpoint[] = this.breakpointMap.get(src) || [];
                     const toDeleteIds = existing.map((bp) => bp.number);
